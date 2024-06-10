@@ -1,3 +1,4 @@
+# Folders
 Binaries
 DerivedDataCache
 Intermediate
@@ -8,6 +9,9 @@ Content/FirstPerson
 Content/FirstPersonArms
 Content/FPWeapon
 Content/LevelPrototyping
+Content/MedievalDungeon
+
+# Filetypes
 .vscode
 .vs
 *.VC.db
