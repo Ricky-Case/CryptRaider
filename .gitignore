@@ -22,3 +22,4 @@ Content/MedievalDungeon
 *.suo
 *.xcodeproj
 *.xcworkspace
+.fake
