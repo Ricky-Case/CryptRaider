@@ -14,7 +14,7 @@ Content/MedievalDungeon
 # Files
 .vscode
 .vs
-CryptRaider.code-workspace
+.fake
 *.VC.db
 *.opensdf
 *.opendb
@@ -23,4 +23,4 @@ CryptRaider.code-workspace
 *.suo
 *.xcodeproj
 *.xcworkspace
-.fake
+CryptRaider.code-workspace
