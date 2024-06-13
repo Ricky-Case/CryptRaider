@@ -11,9 +11,10 @@ Content/FPWeapon
 Content/LevelPrototyping
 Content/MedievalDungeon
 
-# Filetypes
+# Files
 .vscode
 .vs
+CryptRaider.code-workspace
 *.VC.db
 *.opensdf
 *.opendb
