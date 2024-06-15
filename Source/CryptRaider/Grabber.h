@@ -24,5 +24,10 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+private:
+	UPROPERTY(EditAnywhere)
+	float grabDistance = 200.0f;
+
+	UPROPERTY(EditAnywhere)
+	float grabRadius = 100.0f;
 };
