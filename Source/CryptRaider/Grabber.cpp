@@ -4,6 +4,7 @@
 #include "Grabber.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 
 // Sets default values for this component's properties
 UGrabber::UGrabber()
@@ -18,6 +19,11 @@ UGrabber::UGrabber()
 void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UPhysicsHandleComponent* physicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+
+	if(physicsHandle != nullptr) { UE_LOG(LogTemp, Display, TEXT("COMPONENT NAME: %s"), *physicsHandle->GetName()); }
+	else { UE_LOG(LogTemp, Error, TEXT("NO COMPONENT TO POINT TO!")); }
 }
 
 
@@ -25,6 +31,11 @@ void UGrabber::BeginPlay()
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+}
+
+void UGrabber::Grab()
+{
+	UE_LOG(LogTemp, Display, TEXT("GRAB BUTTON PRESSED."));
 
 	FVector lineStart = GetComponentLocation();
 	FVector lineEnd = lineStart + (GetForwardVector() * grabDistance);
@@ -41,10 +52,14 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	
 	if(grabbableFound)
 	{
-		UE_LOG(LogTemp, Display, TEXT("OBJECT IN RANGE: %s"), *hitResult.GetActor()->GetActorNameOrLabel());
+		DrawDebugSphere(GetWorld(), hitResult.ImpactPoint, 10, 10, FColor::Green, false, 5);
+		UE_LOG(LogTemp, Display, TEXT("OBJECT HIT: %s"), *hitResult.GetActor()->GetActorNameOrLabel());
 	}
-	else
-	{
-		UE_LOG(LogTemp, Display, TEXT("NO OBJECT IN RANGE."));
-	}
+	else { UE_LOG(LogTemp, Display, TEXT("NO OBJECT HIT.")); }
+}
+
+void UGrabber::Release()
+{
+	
+	UE_LOG(LogTemp, Display, TEXT("GRAB BUTTON RELEASED."));
 }
