@@ -38,13 +38,14 @@ void UMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if(moveNow)
+	if(bMove)
 	{
 		FVector currentLocation = GetOwner()->GetActorLocation();
 		FVector newLocation = FMath::VInterpConstantTo(currentLocation, targetLocation, DeltaTime, moveSpeed);
 		GetOwner()->SetActorLocation(newLocation);
 
-		if(currentLocation == targetLocation) { moveNow = false; }
+		if(currentLocation == targetLocation) { SetMove(false); }
 	}
 }
 
+void UMover::SetMove(bool bShouldMove) { bMove = bShouldMove; }
