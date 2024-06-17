@@ -21,12 +21,5 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	TArray<AActor*> overlappingActors;
 	GetOverlappingActors(overlappingActors);
 
-	if(overlappingActors.Num() > 0)
-	{
-		for(AActor* actor : overlappingActors) { UE_LOG(LogTemp, Warning, TEXT("OVERLAP WITH ACTOR: %s"), *actor->GetActorNameOrLabel()); }
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("NO OVERLAPPING ACTORS."));
-	}
+	for(AActor* actor : overlappingActors) { UE_LOG(LogTemp, Warning, TEXT("OVERLAP WITH ACTOR: %s"), *actor->GetActorNameOrLabel()); }
 }
