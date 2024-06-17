@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Grabber.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
@@ -25,9 +22,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 	UPhysicsHandleComponent* physicsHandle = GetPhysicsHandle();
 
-	if(physicsHandle == nullptr) { return; }
-
-	if(physicsHandle->GetGrabbedComponent() != nullptr)
+	if(physicsHandle && physicsHandle->GetGrabbedComponent())
 	{
 		physicsHandle->SetTargetLocationAndRotation(
 			GetComponentLocation() + GetForwardVector() * holdDistance,
@@ -36,27 +31,18 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	}
 }
 
+
 void UGrabber::Grab()
 {
-	UE_LOG(LogTemp, Display, TEXT("INTERACT BUTTON PRESSED."));
-
 	UPhysicsHandleComponent* physicsHandle = GetPhysicsHandle();
 
-	if(physicsHandle == nullptr) { return; }
-
-	FHitResult hitResult;
-	bool grabbableFound = GetGrabbableInReach(hitResult);
-	
-	if(grabbed)
+	if(physicsHandle)
 	{
-		ReleaseObject(hitResult, physicsHandle);
-	}
-	else
-	{
-		if(grabbableFound)
-		{
-			GrabObject(hitResult, physicsHandle);
-		}
+		FHitResult hitResult;
+		bool grabbableFound = GetGrabbableInReach(hitResult);
+		
+		if(grabbed) { ReleaseObject(hitResult, physicsHandle); }
+		else { if(grabbableFound) { GrabObject(hitResult, physicsHandle); } }
 	}
 }
 
@@ -64,8 +50,6 @@ void UGrabber::Grab()
 UPhysicsHandleComponent* UGrabber::GetPhysicsHandle() const
 {
 	UPhysicsHandleComponent* result = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-
-	if(result == nullptr) { UE_LOG(LogTemp, Warning, TEXT("GRABBER REQUIRES UPhysicsHandleComponent!")); }
 
 	return result;
 }
@@ -75,8 +59,7 @@ bool UGrabber::GetGrabbableInReach(FHitResult& hitResult)
 {
 	FVector lineStart = GetComponentLocation();
 	FVector lineEnd = lineStart + (GetForwardVector() * grabDistance);
-	DrawDebugLine(GetWorld(), lineStart, lineEnd, FColor::Red);
-
+	
 	bool grabbableFound = GetWorld()->SweepSingleByChannel(
 		hitResult,
 		lineStart,
@@ -89,9 +72,9 @@ bool UGrabber::GetGrabbableInReach(FHitResult& hitResult)
 	return grabbableFound;
 }
 
+
 void UGrabber::GrabObject(FHitResult& hitResult, UPhysicsHandleComponent* physicsHandle)
 {
-	DrawDebugSphere(GetWorld(), hitResult.ImpactPoint, 10, 10, FColor::Green, false, 5);
 	UPrimitiveComponent* hitComponent = hitResult.GetComponent();
 	componentName = hitComponent->GetName();
 
@@ -106,15 +89,12 @@ void UGrabber::GrabObject(FHitResult& hitResult, UPhysicsHandleComponent* physic
 		GetComponentRotation()
 	);
 
-	UE_LOG(LogTemp, Display, TEXT("GRABBED: %s."), *componentName);
 	grabbed = true;
 }
 
+
 void UGrabber::ReleaseObject(FHitResult& hitResult, UPhysicsHandleComponent* physicsHandle)
 {
-	DrawDebugSphere(GetWorld(), hitResult.ImpactPoint, 10, 10, FColor::Blue, false, 5);
-	UE_LOG(LogTemp, Display, TEXT("DROPPED: %s."), *componentName);
-	
 	hitResult.GetActor()->Tags.Remove("Grabbed");
 
 	physicsHandle->ReleaseComponent();

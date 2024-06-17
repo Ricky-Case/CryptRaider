@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "TriggerComponent.h"
 
 UTriggerComponent::UTriggerComponent()
@@ -7,10 +5,12 @@ UTriggerComponent::UTriggerComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
+
 void UTriggerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 }
+
 
 void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -27,6 +27,7 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 		if (component != nullptr) { component->SetSimulatePhysics(false); }
 		
 		unlocker->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+		FString moveVal = mover->GetMoveValue();
 		mover->SetMove(true);
 	}
 	else
@@ -35,14 +36,16 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	}
 }
 
+
 void UTriggerComponent::SetMover(UMover* newMover) { mover = newMover; }
+
 
 AActor* UTriggerComponent::GetUnlocker() const
 {
 	TArray<AActor*> overlappingActors;
 	GetOverlappingActors(overlappingActors);
 
-	for(AActor* actor : overlappingActors) { if(actor->ActorHasTag(unlockTag)) { return actor; } }
+	for(AActor* actor : overlappingActors) { if(actor->ActorHasTag(unlockTag) && !actor->ActorHasTag("Grabbed")) { return actor; } }
 
 	return nullptr;
 }
