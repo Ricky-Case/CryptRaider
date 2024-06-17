@@ -44,19 +44,8 @@ void UGrabber::Grab()
 
 	if(physicsHandle == nullptr) { return; }
 
-	FVector lineStart = GetComponentLocation();
-	FVector lineEnd = lineStart + (GetForwardVector() * grabDistance);
-	DrawDebugLine(GetWorld(), lineStart, lineEnd, FColor::Red);
 	FHitResult hitResult;
-
-	bool grabbableFound = GetWorld()->SweepSingleByChannel(
-		hitResult,
-		lineStart,
-		lineEnd,
-		FQuat::Identity,
-		ECC_GameTraceChannel2,
-		FCollisionShape::MakeSphere(grabRadius)
-	);
+	bool grabbableFound = GetGrabbableInReach(hitResult);
 	
 	if(grabbed)
 	{
@@ -97,4 +86,23 @@ UPhysicsHandleComponent* UGrabber::GetPhysicsHandle() const
 	if(result == nullptr) { UE_LOG(LogTemp, Warning, TEXT("GRABBER REQUIRES UPhysicsHandleComponent!")); }
 
 	return result;
+}
+
+
+bool UGrabber::GetGrabbableInReach(FHitResult& hitResult)
+{
+	FVector lineStart = GetComponentLocation();
+	FVector lineEnd = lineStart + (GetForwardVector() * grabDistance);
+	DrawDebugLine(GetWorld(), lineStart, lineEnd, FColor::Red);
+
+	bool grabbableFound = GetWorld()->SweepSingleByChannel(
+		hitResult,
+		lineStart,
+		lineEnd,
+		FQuat::Identity,
+		ECC_GameTraceChannel2,
+		FCollisionShape::MakeSphere(grabRadius)
+	);
+
+	return grabbableFound;
 }
