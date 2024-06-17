@@ -29,9 +29,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Grab();
 
-	UFUNCTION(BlueprintCallable)
-	void Release();
-
 private:
 	UPhysicsHandleComponent* GetPhysicsHandle() const;
 
