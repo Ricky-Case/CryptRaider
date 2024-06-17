@@ -16,33 +16,26 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if(mover == nullptr)
-	{
-		UE_LOG(LogTemp, Error, TEXT("NO MOVER AVAILABLE!"));
-		return;
-	}
+	if(mover == nullptr) { return; }
 
 	AActor* unlocker = GetUnlocker();
 
 	if(unlocker != nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("STARTING MOVEMENT WITH MOVER AT: %i"), mover);
+		UPrimitiveComponent* component = Cast<UPrimitiveComponent>(unlocker->GetRootComponent());
+		
+		if (component != nullptr) { component->SetSimulatePhysics(false); }
+		
+		unlocker->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 		mover->SetMove(true);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("STOPPING MOVEMENT WITH MOVER AT: %i"), mover);
 		mover->SetMove(false);
 	}
 }
 
-void UTriggerComponent::SetMover(UMover* newMover)
-{
-	mover = newMover;
-	UE_LOG(LogTemp, Display, TEXT("MOVER SET AT: %i"), mover);
-	UE_LOG(LogTemp, Display, TEXT("TAKEN FROM NEW MOVER AT: %i"), newMover);
-	if(mover == nullptr || newMover == nullptr) { UE_LOG(LogTemp, Error, TEXT("NULL POINTER ADDRESS")); }
-}
+void UTriggerComponent::SetMover(UMover* newMover) { mover = newMover; }
 
 AActor* UTriggerComponent::GetUnlocker() const
 {
