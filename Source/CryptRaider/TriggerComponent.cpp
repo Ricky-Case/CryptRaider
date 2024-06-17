@@ -16,4 +16,14 @@ void UTriggerComponent::BeginPlay()
 void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	UE_LOG(LogTemp, Warning, TEXT("GETTING OVERLAPPING ACTORS."));
+
+	TArray<AActor*> overlappingActors;
+	GetOverlappingActors(overlappingActors);
+
+	if(overlappingActors.Num() > 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("OVERLAP WITH: %s"), *overlappingActors[0]->GetActorNameOrLabel());
+	}
 }
