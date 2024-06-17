@@ -97,6 +97,8 @@ void UGrabber::GrabObject(FHitResult& hitResult, UPhysicsHandleComponent* physic
 
 	hitComponent->WakeAllRigidBodies();
 
+	hitResult.GetActor()->Tags.Add("Grabbed");
+
 	physicsHandle->GrabComponentAtLocationWithRotation(
 		hitComponent,
 		NAME_None,
@@ -113,6 +115,8 @@ void UGrabber::ReleaseObject(FHitResult& hitResult, UPhysicsHandleComponent* phy
 	DrawDebugSphere(GetWorld(), hitResult.ImpactPoint, 10, 10, FColor::Blue, false, 5);
 	UE_LOG(LogTemp, Display, TEXT("DROPPED: %s."), *componentName);
 	
+	hitResult.GetActor()->Tags.Remove("Grabbed");
+
 	physicsHandle->ReleaseComponent();
 	grabbed = false;
 }
