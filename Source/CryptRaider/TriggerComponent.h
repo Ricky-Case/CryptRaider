@@ -23,6 +23,8 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
+	AActor* GetUnlocker() const;
+
 	UPROPERTY(EditAnywhere)
-	bool isOverlapping = false;
+	FName unlockTag;
 };
