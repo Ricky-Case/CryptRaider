@@ -97,13 +97,6 @@ void UGrabber::GrabObject(FHitResult& hitResult, UPhysicsHandleComponent* physic
 
 	hitComponent->WakeAllRigidBodies();
 
-	// physicsHandle->GrabComponentAtLocationWithRotation(
-	// 	hitComponent,
-	// 	NAME_None,
-	// 	hitResult.ImpactPoint,
-	// 	GetComponentRotation()
-	// );
-
 	physicsHandle->GrabComponentAtLocationWithRotation(
 		hitComponent,
 		NAME_None,
