@@ -33,6 +33,9 @@ private:
 	UPhysicsHandleComponent* GetPhysicsHandle() const;
 	bool GetGrabbableInReach(FHitResult&);
 
+	void GrabObject(FHitResult&, UPhysicsHandleComponent*);
+	void ReleaseObject(FHitResult&, UPhysicsHandleComponent*);
+
 	UPROPERTY(EditAnywhere)
 	float grabDistance = 200.0f;
 

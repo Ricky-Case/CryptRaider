@@ -31,7 +31,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	{
 		physicsHandle->SetTargetLocationAndRotation(
 			GetComponentLocation() + GetForwardVector() * holdDistance,
-			GetComponentRotation()
+			GetComponentRotation() //TODO: Rotate object upright.
 		);
 	}
 }
@@ -49,31 +49,13 @@ void UGrabber::Grab()
 	
 	if(grabbed)
 	{
-		DrawDebugSphere(GetWorld(), hitResult.ImpactPoint, 10, 10, FColor::Blue, false, 5);
-		UE_LOG(LogTemp, Display, TEXT("DROPPED: %s."), *componentName);
-		
-		physicsHandle->ReleaseComponent();
-		grabbed = false;
+		ReleaseObject(hitResult, physicsHandle);
 	}
 	else
 	{
 		if(grabbableFound)
 		{
-			DrawDebugSphere(GetWorld(), hitResult.ImpactPoint, 10, 10, FColor::Green, false, 5);
-			UPrimitiveComponent* hitComponent = hitResult.GetComponent();
-			componentName = hitComponent->GetName();
-
-			hitComponent->WakeAllRigidBodies();
-
-			physicsHandle->GrabComponentAtLocationWithRotation(
-				hitComponent,
-				NAME_None,
-				hitResult.ImpactPoint,
-				GetComponentRotation()
-			);
-
-			UE_LOG(LogTemp, Display, TEXT("GRABBED: %s."), *componentName);
-			grabbed = true;
+			GrabObject(hitResult, physicsHandle);
 		}
 	}
 }
@@ -105,4 +87,39 @@ bool UGrabber::GetGrabbableInReach(FHitResult& hitResult)
 	);
 
 	return grabbableFound;
+}
+
+void UGrabber::GrabObject(FHitResult& hitResult, UPhysicsHandleComponent* physicsHandle)
+{
+	DrawDebugSphere(GetWorld(), hitResult.ImpactPoint, 10, 10, FColor::Green, false, 5);
+	UPrimitiveComponent* hitComponent = hitResult.GetComponent();
+	componentName = hitComponent->GetName();
+
+	hitComponent->WakeAllRigidBodies();
+
+	// physicsHandle->GrabComponentAtLocationWithRotation(
+	// 	hitComponent,
+	// 	NAME_None,
+	// 	hitResult.ImpactPoint,
+	// 	GetComponentRotation()
+	// );
+
+	physicsHandle->GrabComponentAtLocationWithRotation(
+		hitComponent,
+		NAME_None,
+		hitResult.ImpactPoint,
+		GetComponentRotation()
+	);
+
+	UE_LOG(LogTemp, Display, TEXT("GRABBED: %s."), *componentName);
+	grabbed = true;
+}
+
+void UGrabber::ReleaseObject(FHitResult& hitResult, UPhysicsHandleComponent* physicsHandle)
+{
+	DrawDebugSphere(GetWorld(), hitResult.ImpactPoint, 10, 10, FColor::Blue, false, 5);
+	UE_LOG(LogTemp, Display, TEXT("DROPPED: %s."), *componentName);
+	
+	physicsHandle->ReleaseComponent();
+	grabbed = false;
 }
