@@ -4,9 +4,9 @@ Developed as part of the GameDeev.tv "Unreal Engine 5 C++ Developer" Udemy cours
 The primary focus of this project was to learn how to develop the following using Unreal Engine 5:
 - Debugging
 - Geometry
-- Lighting
+- Lighting (Dynamic)
 - Map Design
-- Physics
+- Physics Puzzles
 - Tags
 
 # Required Package(s)
