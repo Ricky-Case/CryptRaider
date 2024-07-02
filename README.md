@@ -1,7 +1,7 @@
 # CryptRaider
 Developed as part of the GameDeev.tv "Unreal Engine 5 C++ Developer" Udemy course.
 
-The primary focus of this project was to learn how to use the following in Unreal Engine 5:
+The primary focus of this project was to learn how to develop the following using Unreal Engine 5:
 - Debugging
 - Geometry
 - Lighting
